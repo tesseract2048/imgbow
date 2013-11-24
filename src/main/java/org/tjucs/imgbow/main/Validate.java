@@ -2,6 +2,7 @@ package org.tjucs.imgbow.main;
 
 import java.util.List;
 
+import org.tjucs.imgbow.Dict;
 import org.tjucs.imgbow.Feature;
 import org.tjucs.imgbow.Instance;
 import org.tjucs.imgbow.InstanceGenerator;
@@ -16,7 +17,7 @@ import weka.core.SparseInstance;
 /**
  * @author tess3ract <hty0807@gmail.com>
  */
-public class Classify {
+public class Validate {
 
     private static InstanceGenerator instanceGenerator;
 
@@ -24,7 +25,7 @@ public class Classify {
 
     private static Classifier classifier;
 
-    private static List<Feature> dict;
+    private static Dict dict;
 
     private static Classifier loadClassifier(String input) throws Exception {
         return (Classifier) SerializationUtils.loadObject(input);
@@ -43,11 +44,10 @@ public class Classify {
         return categories[(int) value];
     }
 
-    @SuppressWarnings("unchecked")
     public static void main(String[] args) throws Exception {
         if (args.length < 6) {
             System.out
-                    .println("Usage: Classify <img_base> <categories> <start> <end> <input_dict> <input_mlp>");
+                    .println("Usage: Validate <img_base> <validate_categories> <start> <end> <input_dict> <input_mlp>");
             return;
         }
         String imgBase = args[0];
@@ -57,7 +57,7 @@ public class Classify {
         String inputDict = args[4];
         String inputMlp = args[5];
         instanceGenerator = new InstanceGenerator(categories);
-        dict = (List<Feature>) SerializationUtils.loadObject(inputDict);
+        dict = (Dict) SerializationUtils.loadObject(inputDict);
         classifier = loadClassifier(inputMlp);
         List<Sample> samples = instanceGenerator
                 .getSamples(imgBase, start, end);

@@ -86,20 +86,21 @@ public class InstanceGenerator {
     }
 
     /* generate dict */
-    private List<Feature> calcDict(List<Feature> bow) {
+    private Dict calcDict(List<Feature> bow) {
         System.out.println("bow size: " + bow.size());
         ClusterResult clusterResult = cluster.getSets(bow, PARTITION);
-        return clusterResult.getCentroids();
+        return new Dict(categories, clusterResult.getCentroids());
     }
 
     /* generate instance vector for specified features and using specified dict */
-    public Instance getInstance(List<Feature> features, List<Feature> dict) {
-        int[] counts = new int[dict.size()];
+    public Instance getInstance(List<Feature> features, Dict dict) {
+        int dictSize = dict.getWords().size();
+        int[] counts = new int[dictSize];
         for (int i = 0; i < features.size(); i++) {
             int nearest = -1;
             double nearestDist = Double.MAX_VALUE;
-            for (int j = 0; j < dict.size(); j++) {
-                double dist = dict.get(j).distance(features.get(i));
+            for (int j = 0; j < dictSize; j++) {
+                double dist = dict.getWords().get(j).distance(features.get(i));
                 if (dist < nearestDist) {
                     nearestDist = dist;
                     nearest = j;
@@ -107,8 +108,8 @@ public class InstanceGenerator {
             }
             counts[nearest]++;
         }
-        double[] freq = new double[dict.size()];
-        for (int i = 0; i < dict.size(); i++) {
+        double[] freq = new double[dictSize];
+        for (int i = 0; i < dictSize; i++) {
             freq[i] = (double) counts[i] / features.size();
         }
         return new Instance(freq);
@@ -120,7 +121,7 @@ public class InstanceGenerator {
         List<Sample> samples = getSamples(imgBase, 0, cateSample);
         Map<String, List<Feature>> allFeatures = getFeatures(samples);
         List<Feature> bow = allFeatures.get("bow");
-        List<Feature> dict = calcDict(bow);
+        Dict dict = calcDict(bow);
         System.out.println("dumping dict to " + outputDict);
         SerializationUtils.dumpObject(outputDict, dict);
         List<Instance> instances = new ArrayList<Instance>();
@@ -136,7 +137,6 @@ public class InstanceGenerator {
         }
         return instances;
     }
-
 
     public void dumpArff(List<Instance> instances, String output)
             throws IOException {
