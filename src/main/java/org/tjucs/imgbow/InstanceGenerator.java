@@ -18,7 +18,6 @@ import org.tjucs.imgbow.cluster.ClusterResult;
 import org.tjucs.imgbow.cluster.KMeansCluster;
 import org.tjucs.imgbow.feature.FeatureMaker;
 import org.tjucs.imgbow.feature.SIFTFeatureMaker;
-import org.tjucs.imgbow.util.SerializationUtils;
 
 public class InstanceGenerator {
 
@@ -86,21 +85,21 @@ public class InstanceGenerator {
     }
 
     /* generate dict */
-    private Dict calcDict(List<Feature> bow) {
+    private List<Feature> calcDict(List<Feature> bow) {
         System.out.println("bow size: " + bow.size());
         ClusterResult clusterResult = cluster.getSets(bow, PARTITION);
-        return new Dict(categories, clusterResult.getCentroids());
+        return clusterResult.getCentroids();
     }
 
     /* generate instance vector for specified features and using specified dict */
-    public Instance getInstance(List<Feature> features, Dict dict) {
-        int dictSize = dict.getWords().size();
+    public Instance getInstance(List<Feature> features, List<Feature> dict) {
+        int dictSize = dict.size();
         int[] counts = new int[dictSize];
         for (int i = 0; i < features.size(); i++) {
             int nearest = -1;
             double nearestDist = Double.MAX_VALUE;
             for (int j = 0; j < dictSize; j++) {
-                double dist = dict.getWords().get(j).distance(features.get(i));
+                double dist = dict.get(j).distance(features.get(i));
                 if (dist < nearestDist) {
                     nearestDist = dist;
                     nearest = j;
@@ -116,14 +115,11 @@ public class InstanceGenerator {
     }
 
     /* generate instances */
-    public List<Instance> generateInstances(String imgBase, int cateSample,
-            String outputDict) throws Exception {
+    public TrainResult train(String imgBase, int cateSample) throws Exception {
         List<Sample> samples = getSamples(imgBase, 0, cateSample);
         Map<String, List<Feature>> allFeatures = getFeatures(samples);
         List<Feature> bow = allFeatures.get("bow");
-        Dict dict = calcDict(bow);
-        System.out.println("dumping dict to " + outputDict);
-        SerializationUtils.dumpObject(outputDict, dict);
+        List<Feature> dict = calcDict(bow);
         List<Instance> instances = new ArrayList<Instance>();
         for (Sample sample: samples) {
             List<Feature> features = allFeatures.get(sample.getPath());
@@ -135,7 +131,7 @@ public class InstanceGenerator {
             instance.setCategory(sample.getCategory());
             instances.add(instance);
         }
-        return instances;
+        return new TrainResult(instances, dict);
     }
 
     public void dumpArff(List<Instance> instances, String output)
