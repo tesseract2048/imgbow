@@ -19,8 +19,14 @@ import org.tjucs.imgbow.cluster.KMeansCluster;
 import org.tjucs.imgbow.feature.FeatureMaker;
 import org.tjucs.imgbow.feature.SIFTFeatureMaker;
 
+/**
+ * 图像样本生成类
+ * 
+ * @author tess3ract <hty0807@gmail.com>
+ */
 public class InstanceGenerator {
 
+    /* 词典大小, 也是 K-Means 聚类得到的类别数量 */
     private static final int PARTITION = 80;
 
     private FeatureMaker featureMaker = new SIFTFeatureMaker();
@@ -35,7 +41,15 @@ public class InstanceGenerator {
         this.categories = categories;
     }
 
-    /* get samples located in base with specified range */
+    /**
+     * 得到样本文件列表
+     * 
+     * @param base
+     * @param start
+     * @param end
+     * @return
+     * @throws IOException
+     */
     public List<Sample> getSamples(String base, int start, int end)
             throws IOException {
         List<Sample> samples = new ArrayList<Sample>();
@@ -60,7 +74,13 @@ public class InstanceGenerator {
         return samples;
     }
 
-    /* generate bow and features for specified samples */
+    /**
+     * 根据样本文件列表生成特征点向量的列表
+     * 
+     * @param samples
+     * @return
+     * @throws IOException
+     */
     private Map<String, List<Feature>> getFeatures(List<Sample> samples)
             throws IOException {
         List<Feature> bow = new ArrayList<Feature>();
@@ -84,14 +104,25 @@ public class InstanceGenerator {
         return allFeatures;
     }
 
-    /* generate dict */
+    /**
+     * 根据特征点向量的词袋生成词典
+     * 
+     * @param bow
+     * @return
+     */
     private List<Feature> calcDict(List<Feature> bow) {
         System.out.println("bow size: " + bow.size());
         ClusterResult clusterResult = cluster.getSets(bow, PARTITION);
         return clusterResult.getCentroids();
     }
 
-    /* generate instance vector for specified features and using specified dict */
+    /**
+     * 根据词典和特征点向量的列表生成样本描述 (未标注)
+     * 
+     * @param features
+     * @param dict
+     * @return
+     */
     public Instance getInstance(List<Feature> features, List<Feature> dict) {
         int dictSize = dict.size();
         int[] counts = new int[dictSize];
@@ -114,7 +145,14 @@ public class InstanceGenerator {
         return new Instance(freq);
     }
 
-    /* generate instances */
+    /**
+     * 给定图像目录生成样本类表和词典
+     * 
+     * @param imgBase
+     * @param cateSample
+     * @return
+     * @throws Exception
+     */
     public TrainResult train(String imgBase, int cateSample) throws Exception {
         List<Sample> samples = getSamples(imgBase, 0, cateSample);
         Map<String, List<Feature>> allFeatures = getFeatures(samples);

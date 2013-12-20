@@ -11,10 +11,13 @@ import org.tjucs.imgbow.Feature;
 import org.tjucs.imgbow.util.FeatureTree;
 
 /**
+ * K-Means 聚类器实现
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class KMeansCluster implements Cluster {
 
+    /* 误差阈值 */
     private static final double ERROR_THRESHOLD = 1.2f;
 
     public ClusterResult getSets(List<Feature> features, int partition) {

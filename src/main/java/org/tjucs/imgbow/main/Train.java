@@ -14,6 +14,8 @@ import weka.classifiers.Classifier;
 import weka.classifiers.functions.MultilayerPerceptron;
 
 /**
+ * 训练程序入口
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class Train {

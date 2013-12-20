@@ -6,6 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
+ * 序列化辅助类
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class SerializationUtils {

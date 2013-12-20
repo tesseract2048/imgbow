@@ -5,6 +5,8 @@ import java.util.List;
 import org.tjucs.imgbow.Feature;
 
 /**
+ * 聚类器接口描述
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public interface Cluster {

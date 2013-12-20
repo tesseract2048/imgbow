@@ -15,6 +15,8 @@ import org.tjucs.imgbow.util.SerializationUtils;
 import weka.classifiers.Classifier;
 
 /**
+ * 评估程序入口
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class Validate {

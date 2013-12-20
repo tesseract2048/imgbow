@@ -3,6 +3,8 @@ package org.tjucs.imgbow.util;
 import org.tjucs.imgbow.Feature;
 
 /**
+ * 特征向量树 (KDTree)
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class FeatureTree extends KDTree.Euclidean<Integer> {

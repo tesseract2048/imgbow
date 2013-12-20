@@ -3,14 +3,19 @@ package org.tjucs.imgbow;
 import java.util.Arrays;
 
 /**
+ * 单个图像样本的描述
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class Instance {
 
+    /* 图像文件名 */
     private String image;
 
+    /* 统计得到的词频 */
     private double[] freq;
 
+    /* 标注分类 */
     private String category;
 
     public Instance(double[] freq) {

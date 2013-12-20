@@ -5,12 +5,16 @@ import java.util.List;
 import org.tjucs.imgbow.Feature;
 
 /**
+ * 聚类结果描述
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class ClusterResult {
 
+    /* 中心点列表 */
     private List<Feature> centroids;
 
+    /* 各个点所属的类别序号 */
     private List<Integer> belongs;
 
     public ClusterResult(List<Feature> centroids, List<Integer> belongs) {

@@ -7,14 +7,18 @@ import java.util.Random;
 import com.alibaba.simpleimage.analyze.sift.scale.KDFeaturePoint;
 
 /**
+ * SIFT 特征点的向量描述
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class Feature implements Serializable {
 
     private static final long serialVersionUID = -4432933599973324376L;
 
+    /* 特征维数 */
     public static final int DIMENSION = 128;
 
+    /* 特征向量的值 */
     private int[] values;
 
     public Feature() {
@@ -50,6 +54,12 @@ public class Feature implements Serializable {
         this.values = values;
     }
 
+    /**
+     * 计算与其它特征向量的欧式距离
+     * 
+     * @param x
+     * @return
+     */
     public double distance(Feature x) {
         int[] values2 = x.getValues();
         if (values == null || values2 == null) {
@@ -62,6 +72,11 @@ public class Feature implements Serializable {
         return Math.sqrt(tmp);
     }
 
+    /**
+     * 与其它特征向量做加法
+     * 
+     * @param x
+     */
     public void add(Feature x) {
         int[] values2 = x.getValues();
         if (values == null || values2 == null) {

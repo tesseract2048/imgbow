@@ -1,12 +1,16 @@
 package org.tjucs.imgbow;
 
 /**
+ * 样本文件描述
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class Sample {
 
+    /* 路径 */
     private String path;
 
+    /* 分类标注 */
     private String category;
 
     public Sample() {

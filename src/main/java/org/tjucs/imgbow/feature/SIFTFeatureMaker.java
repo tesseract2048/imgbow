@@ -17,6 +17,8 @@ import com.alibaba.simpleimage.analyze.sift.render.RenderImage;
 import com.alibaba.simpleimage.analyze.sift.scale.KDFeaturePoint;
 
 /**
+ * SIFT特征提取实现
+ * 
  * @author tess3ract <hty0807@gmail.com>
  */
 public class SIFTFeatureMaker implements FeatureMaker {
@@ -28,7 +30,7 @@ public class SIFTFeatureMaker implements FeatureMaker {
     private IPixelConverter getPixelConverter() {
         return new IPixelConverter() {
             public float convert(int r, int g, int b) {
-                return (float)(r + g + b) / 255 / 3;
+                return (float) (r + g + b) / 255 / 3;
             }
         };
     }
